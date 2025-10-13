@@ -33,6 +33,7 @@ public class BookService {
         entity.setImgUrl(req.getImgUrl());
         entity.setTotalPage(req.getTotalPage());
         entity.setIsTargeted(true);
+        entity.setAuthor(req.getAuthor());
 
         bookRepository.save(entity);
     }
