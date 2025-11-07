@@ -17,8 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-!**/src/main/resources/application.properties
-!**/src/main/resources/gcp/service-account.json
+!**/src/main/resources/**
 
 ### IntelliJ IDEA ###
 .idea
