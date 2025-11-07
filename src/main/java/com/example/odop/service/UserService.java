@@ -23,7 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
     private final JwtUtil jwtUtil;
-    private final S3Service s3Service;
+    private final GCPService s3Service;
     private final ReportService reportService;
 
     @Transactional
