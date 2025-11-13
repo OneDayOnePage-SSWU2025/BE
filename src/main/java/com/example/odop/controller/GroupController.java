@@ -22,7 +22,7 @@ public class GroupController {
     private final JoinService joinService;
     @Operation(summary = "그룹 생성", description = "그룹 정보/첫 책 정보 입력해서 생성. 책 정보들은 알라딘 api 호출을 선행해 얻어와야함.")
     @PostMapping
-    public ResponseEntity<ApiResponse> makeGroup(@AuthenticationPrincipal(expression = "id") String id, @Valid @RequestBody GroupRequest req) {
+    public ResponseEntity<ApiResponse> makeGroup(@AuthenticationPrincipal(expression = "id") String id, @Valid @ModelAttribute GroupRequest req) {
         groupService.makeGroup(req, id);
         return ResponseEntity.ok(new ApiResponse(true, "그룹 생성 성공", null));
     }
