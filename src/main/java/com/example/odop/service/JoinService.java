@@ -7,15 +7,18 @@ import com.example.odop.dto.Response.GroupResponse;
 import com.example.odop.entity.*;
 import com.example.odop.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class JoinService {
     private final JoinRepository joinRepository;
     private final GroupRepository groupRepository;
@@ -68,7 +71,7 @@ public class JoinService {
             GroupDetailResponse res = new GroupDetailResponse();
             res.setGroupId(group.getGroupId());
             res.setGroupName(group.getGroupName());
-
+            log.info("groupId={}, isTargeted={}", group.getGroupId(), true);
             Books book = bookRepository.findByGroupAndIsTargeted(group, true).orElseThrow(()->new IllegalArgumentException("책이 존재하지 않음"));
             BookResponse bookRes = new BookResponse();
             bookRes.setBookTitle(book.getBookTitle());
@@ -78,8 +81,11 @@ public class JoinService {
             bookRes.setBookId(book.getBookId());
             res.setBook(bookRes);
 
-            Memos memo = memoRepository.findTopByUserAndBookOrderByCreatedDateDesc(user, book).orElseThrow(()->new IllegalArgumentException("책이 존재하지 않음"));
-            res.setLatestMemoPage(memo.getPage());
+            Optional<Memos> memoOpt =
+                    memoRepository.findTopByUserAndBookOrderByCreatedDateDesc(user, book);
+
+            int latestPage = memoOpt.map(Memos::getPage).orElse(0);
+            res.setLatestMemoPage(latestPage);
 
             groupDetailResponses.add(res);
         }

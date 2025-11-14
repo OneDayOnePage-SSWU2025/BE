@@ -25,7 +25,8 @@ public class UserController {
     private final UserService userService;
     private final ReportService reportService;
 
-    @Operation(summary = "회원가입", description = "아이디/비밀번호/닉네임/이미지로 가입합니다.")
+    @Operation(summary = "회원가입",
+            description = "아이디/비밀번호/닉네임/이미지로 가입합니다. 이미지가 있기때문에 Postman form-data로 보내야합니다. 스웨거로 테스트 불가능")
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> signUp(@Valid @ModelAttribute SignUpRequest req) throws Exception {
         userService.SignUp(req);

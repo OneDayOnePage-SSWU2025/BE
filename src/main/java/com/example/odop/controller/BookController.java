@@ -24,7 +24,7 @@ public class BookController {
     private final BookService bookService;
     private final MemoService memoService;
 
-    @Operation(summary = "책추가(책변경)", description = "추가한 책으로 변경되는거임")
+    @Operation(summary = "책추가(책변경)", description = "추가한 책으로 변경되는거임, 이 api도 포스트맨으로 실행해주셔야 합니다. 헤더에 토큰 넣고 raw타입으로 JSON요청 보내시면 됩니다.")
     @PostMapping
     public ResponseEntity<ApiResponse> addBook(@AuthenticationPrincipal(expression = "id") String id, @RequestParam Long groupId, @Valid @RequestBody BookRequest req) throws IllegalAccessException {
         bookService.addBook(id, req, groupId);
@@ -41,7 +41,7 @@ public class BookController {
     @PostMapping("/memo")
     public ResponseEntity<ApiResponse> makeMemo(@AuthenticationPrincipal(expression = "id") String id, @Valid @RequestBody MemoRequest req){
         memoService.makeMemo(id, req);
-        return ResponseEntity.ok(new ApiResponse(true, "책 페이지 조회 성공",null));
+        return ResponseEntity.ok(new ApiResponse(true, "메모 작성 성공",null));
     }
     //특정 책의 특정 페이지에 달린 메모 목록
     @Operation(summary = "페이지별 메모 목록", description = "책 ID와 페이지 번호로 메모 목록을 조회합니다.")
