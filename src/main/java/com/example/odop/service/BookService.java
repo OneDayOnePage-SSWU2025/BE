@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -48,7 +49,7 @@ public class BookService {
         Groups group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
 
         Users register = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("존재하지 않는 유저입니다."));
-        if(register != group.getUser()){
+        if(!Objects.equals(register.getUserId(), group.getUser().getUserId())){
             throw new IllegalAccessException("생성자만 책을 수정할 수 있습니다.");
         }
 
