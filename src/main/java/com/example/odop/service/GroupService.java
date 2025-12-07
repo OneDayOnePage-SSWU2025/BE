@@ -1,14 +1,20 @@
 package com.example.odop.service;
 
 import com.example.odop.dto.Request.GroupRequest;
-import com.example.odop.entity.Groups;
-import com.example.odop.entity.Users;
+import com.example.odop.dto.Response.*;
+import com.example.odop.entity.*;
+import com.example.odop.repository.BookRepository;
 import com.example.odop.repository.GroupRepository;
+import com.example.odop.repository.JoinRepository;
 import com.example.odop.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -18,6 +24,8 @@ public class GroupService {
     private final UserRepository userRepository;
     private final BookService bookService;
     private final JoinService joinService;
+    private final JoinRepository joinRepository;
+    private final BookRepository bookRepository;
 
     @Transactional
     public void makeGroup(GroupRequest req, String id) {
@@ -56,6 +64,23 @@ public class GroupService {
         Users register = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("존재하지 않는 유저입니다."));
         return register.equals(group.getUser());
 
+    }
+
+    public GroupEditResponse getGroupForEdit(Long id){
+        Groups group = groupRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("존재하지 않는 그룹입니다."));
+        List<Books> books = bookRepository.findAllByGroup(group);
+        GroupEditResponse res =  new GroupEditResponse();
+        res.setGroupId(group.getGroupId());
+        res.setGroupName(group.getGroupName());
+        res.setTheme(group.getTheme());
+        res.setCode(group.getCode());
+        List<String> bookNames = new ArrayList<>();
+
+        for (Books book : books) {
+            bookNames.add(book.getBookTitle());
+        }
+        res.setBookNames(bookNames);
+        return res;
     }
 
 

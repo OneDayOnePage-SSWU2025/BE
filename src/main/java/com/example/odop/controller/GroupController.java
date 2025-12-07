@@ -50,6 +50,12 @@ public class GroupController {
     public ResponseEntity<?> getDetailGroups(@AuthenticationPrincipal(expression = "id") String id) {
         return ResponseEntity.ok(joinService.getDetailedGroups(id));
     }
+
+    @Operation(summary = "그룹 정보 단건 조회", description = "그룹 정보 수정 페이지에 띄울 정보들 조회하는거")
+    @GetMapping("/forEdit")
+    public ResponseEntity<?> getGroupForEdit(Long groupId) {
+        return ResponseEntity.ok(groupService.getGroupForEdit(groupId));
+    }
 }
 
 
