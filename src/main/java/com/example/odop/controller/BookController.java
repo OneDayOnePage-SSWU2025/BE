@@ -28,7 +28,7 @@ public class BookController {
     @PostMapping
     public ResponseEntity<ApiResponse> addBook(@AuthenticationPrincipal(expression = "id") String id, @RequestParam Long groupId, @Valid @RequestBody BookRequest req) throws IllegalAccessException {
         bookService.addBook(id, req, groupId);
-        return ResponseEntity.ok(new ApiResponse(true, "그룹 생성 성공", null));
+        return ResponseEntity.ok(new ApiResponse(true, "책 추가 성공", null));
     }
 
     @Operation(summary = "책 총 페이지 수", description = "책 아이디 주면 그 책 총 페이지 수 리턴")

@@ -41,12 +41,13 @@ public class BookService {
 
     @Transactional
     public void addBook(String id, BookRequest req, Long groupId) throws IllegalAccessException {
-        Books oldBook = bookRepository.findByIsTargeted(true);
+
+        Groups group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
+
+        Books oldBook = bookRepository.findByGroupAndIsTargeted(group,true).orElseThrow(() -> new IllegalArgumentException("책 조회중 오류 발생"));;
         if (oldBook != null) {
             oldBook.setIsTargeted(false);
         }
-
-        Groups group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 그룹입니다."));
 
         Users register = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("존재하지 않는 유저입니다."));
         if(!Objects.equals(register.getUserId(), group.getUser().getUserId())){
